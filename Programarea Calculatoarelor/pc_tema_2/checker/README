@@ -1,0 +1,141 @@
+
+CAZAN BOGDAN MARIAN 313CB
+TEMA2 PC
+
+	Pentru a realiza tema, am avut nevoie de urmatoarele biblioteci suplimentare:
+-stdlib.h
+-string.h
+
+
+		CERINTA 0
+
+	Consola interactiva a fost realizata prin repetarea unei secvente de
+instructiuni, in cadrul careia se afla o insiruire de if-uri, in care se 
+compara valoarea de la tastarura cu optiunile posibile. Daca optiunea gasita
+este valida, atunci se va efectua task-ul/cerinta respectiva.Programul se va
+incheia in momentul in care se va introduce "quit".
+	Un lucru important de precizat in cadrul consolei interactive este 
+faptul ca se citeste calea catre un folder cu o poezie, si aceasta va fi
+luata intr-un buffer des intalnit in cadrul programului ca "s".
+
+
+		CERINTA 1 - UPPERCASE
+
+	Pentru aceasta cerinta, se verifica daca inceputul fiecarui vers este
+litera mica, fiind astfel transformata in litera mare, iar restul literelor sa
+fie mici, altfel vor fi transformate in litera mica. Transformarea se face prin
+compararea fiecarui caracter cu codurile ASCII ale lui a si z('a','z','A','Z').
+Obs: se ia separat prima litera din poezie.
+
+		CERINTA 2 - TRIMMING
+
+	Folosind functia strchr, vom cauta toate caracterele invalide, adica
+cele nonalfabetice, iar daca acestea sunt gasite, sunt eliminate, la fel cum
+se elimina un element dintr-un vector, caracter cu caracter.
+	Vom lua separat cazul whitespace-ului, deoarece acesta trebuie sa 
+indeplineasca o conditie, anume ca acesta sa fie redus la exact un caracter,
+lucru realizat prin verificarea succesorului.
+
+		CERINTA 3 - MAKE_IT_SILLY
+
+	Aceasta cerinta nu are prea multe chestii de explicat. Se da la inceputul
+main-ului comanda srand(42), pentru a crea seed-ul, iar apoi, in cadrul functiei,
+se va citi probabilitatea, va fi transforamata din tipul array in integer, iar apoi
+se va compara de fiecare data cu valoarea aleatoare generata si vor fi transformate
+literele din litera mare in mica si invers, daca este cazul.
+
+		CERINTA 4 - MAKE_IT_FRIENDLIER
+
+	Pentru aceasta cerinta, am folosit functia strtok in felul urmator:
+am facut prima data o copie a poeziei, pentru a nu se pierde cea initiala,
+iar copiei iam aplicat strtok-ul, spargabd poezia in cuvinte. Utilizand apoi
+functia regasita in task_helper, get_friendly_word, cautam pentru fiecare cuvant
+diminutivul sau. Daca se gaseste un diminutiv, atunci in locul vechiului cuvant
+va aparea noul cuvant.
+	Acest lucru se realizeaza prin stergerea de la pozitia primului caracter a
+vechiului cuvant cu lungimea acestuia. !!Se ia o alta copie a poeziei, pentru a nu 
+se pierde pozitia fiecarui cuvant vechi, deoarece diminutivele au lungime diferita,
+ceea ce ar schimba pozitia urmatorului cuvant !! 
+	Dupa stergerea cuvantului, se copiaza diminutivul, si se va continua pana
+la urmatorul cuvant care dispune de un diminutiv, realizandu-se apoi acelasi
+procedeu ca cel descris mai sus.
+
+		CERINTA 5 - MAKE_IT_RHYME
+
+	Aceasta cerinta avut nevoie de o serie de functii, care au fost grupate 
+sugestiv in cadrul programului.
+	Aproape fiecare functie este inclusa cel putin o data intr-o functie,
+care la randul ei este apelata in cadrul altei functii, etc...
+	Rationamentul a fost urmatorul: spargem poezia in versuri, si apoi luam
+primele 4 versuri, apoi urmatoarele 4 versuri, etc., care formeaza catrene si
+verificam, in functie de rima ceruta, daca versurile rimeaza. Daca nu rimeaza,
+vom cauta sinonime si vom lua cel mai mic sinonim lexicografic, care sa 
+indeplineasca conditia de a rima.
+
+	Pentru a prezenta metoda de rezolvare, vom lua de fapt fiecare functie,
+de la functia radacina, le vom numi si vom spune succint cate ceva despre
+fiecare dintre ele:
+-----rhimy
+	Este functia din cadrul scheletului. In aceasta functie spargem poezia
+in versuri, citim tipul de rima, apoi apelam urmatoarea functie
+
+-----creare_poezie
+	In cadrul acestei functii, vom declara majoritatea variabilelor de care
+avem nevoie pentru a efectua cerinta, luam ultima litera din fiecare vers din
+cele 4, si de asemenea vom memora numarul de caractere nonalfabetice care se
+afla dupa ultima litera a fiecarui vers. Contine urmatoarele 3 functii:
+{
+{1)-----is_ok
+{	Returneaza valoarea numarului de caractere speciale de la sfarsitul
+{versului, dupa ultima litera a versului.
+{
+{2)-----is_letter
+{	Functie care returneaza ultima litera de la fiecare vers.
+{
+{3)-----rhyme_checker
+{	Este functia care face selectia dintre cum sa apeleze functiile necesare
+{rezolvarii task-ului, in functie de rima ceruta. Aceasta contine urmatoarea
+{functie:
+
+-----rhyme_test
+	Aceasta functie are rolul de a forma noile versuri ale poeziei(atentie:
+nu poezia in sine, doar versurile) prin apelarea urmatoarelor 3 functii:
+{
+{-----last_words
+{	Functie care va lua ultimul cuvant din doua versuri alese, anume cele 
+{corespunzatoare rimei cerute(celelalte doua versuri vor respecta aceeasi regula).
+{
+{-----good_synonyme
+{	Dupa cum spune si numele, este functia care va returna, daca este posibil,
+{cel mai mic lexicografic sinonim al cuvantului vechi, care trebuie sa indeplineasca
+{conditia de rima.
+{
+{-----ok_condition
+{	In aceasta functie, se va face verifcarea urmatoare: ultimul cuvant din primul
+{vers are un sinonim, atunci se va forma noul vers prin eliminarea cuvantului vechi
+{si introducerea celui nou. Daca nu se gaseste nici un sinonim in primul vers,
+{atunci cautarea se va face in cel de-al doilea vers(note: nu al doilea vers din strofa,
+{ci versul cu care trebuie sa rimeze, care poate fi al treilea sau al patrulea vers din
+{strofa),si se va efectua acelasi procedeu ca in primul caz, si daca nici in acest caz
+{nu vor fi gasite sinonime, atunci versurile vor ramane neschimbate.
+
+	
+
+
+		
+
+	Toate functiile au fost scrise de la zero de mine, luand de pe net doar
+cateva sintaxe ale functiilor din bibliotecile stdlib.h si string.h, astfel ca
+nu am nimic de precizat in cadrul bibliografiei.
+
+
+
+
+
+
+
+
+
+
+
+
